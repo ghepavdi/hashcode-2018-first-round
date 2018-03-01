@@ -85,10 +85,7 @@ def calculate_score(score_input):
 
 def create_vehicles(n_vehicles):
     # state_enum, x, y, id_ride
-    vehicles = []
-    for i in range(n_vehicles):
-        vehicles.append(np.array([0, 0, 0, 0]))
-    return np.array(vehicles)
+    return np.zeros((n_vehicles, 4), dtype=int)
 
 
 filename = sys.argv[1]

@@ -145,6 +145,7 @@ def write_output(filename, things_to_score):
 
 def calculate_score(score_input):
     score = 0
+
     return score
 
 
@@ -170,7 +171,7 @@ def create_vehicles(n_vehicles):
     return vehicles
 
 
-def simulate(max_turns, vehicles, rides):
+def simulate(max_turns, vehicles, rides, bonus):
     """
     Scorriamo i veicoli e guardiamo se sono giunti a destinazione:
         modifichiamo lo stato del veicolo
@@ -192,7 +193,8 @@ def simulate(max_turns, vehicles, rides):
     """
     ride_indexes = [i for i in range(len(rides))]
     random.shuffle(ride_indexes)
-    print("ride_indexes: ", ride_indexes)
+    print("Simulation start")
+    score = 0
     for t in range(max_turns):
         for v in vehicles:
             v_state = get_vehicle_state(v)
@@ -215,8 +217,9 @@ def simulate(max_turns, vehicles, rides):
                         set_vehicle_ride(v, r)
                         set_ride_state(rides[r], RideState.ASSIGNED)
                         ride_indexes.remove(r)
+                        score += calculate_ride_score(rides, bonus, r, t)
                         break
-
+    return score
 
 def ride_is_optimal(vehicle, ride):
     if vehicle[4] == ride[4]:
@@ -231,20 +234,29 @@ def write_output(filename, vehicles):
             submission.write("%d " % vehicle[-1][i])
         submission.write("\n")
 
-filename = []
-filename.append('input/a_example.in')
-filename.append('input/b_should_be_easy.in')
-filename.append('input/c_no_hurry.in')
-filename.append('input/d_metropolis.in')
-filename.append('input/e_high_bonus.in')
+filename = 'input/b_should_be_easy.in'
+# filename.append('input/a_example.in')
+# filename.append('input/b_should_be_easy.in')
+# filename.append('input/c_no_hurry.in')
+# filename.append('input/d_metropolis.in')
+# filename.append('input/e_high_bonus.in')
 
-for file in filename:
-    rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(file)
+# for file in filename:
+# rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
+# vehicles = create_vehicles(n_vehicles)
+
+best_score = 0
+while True:
+    rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
     vehicles = create_vehicles(n_vehicles)
-    simulate(n_steps, vehicles, rides)
+    curr_score = simulate(n_steps, vehicles, rides, starting_bonus)
+    if curr_score > best_score:
+        print("YAY", curr_score)
+        write_output(filename, vehicles)
+        best_score = curr_score
 
-    print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
-    print("rides: ", rides)
-    print("vehicles: ", vehicles)
+# print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
+# print("rides: ", rides)
+# print("vehicles: ", vehicles)
 
-    write_output(file, vehicles)
+write_output(filename, vehicles)

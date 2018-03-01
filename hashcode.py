@@ -80,20 +80,38 @@ def distance(start_point, end_point):
     return abs(a - x) + abs(b - y)
 
 
-def calculate_ride_score(rides, bonus, ride_id, started_time, finished_time):
+def calculate_ride_score_greedy(rides, bonus, ride_id, current_step,current_x,current_y):
     score = 0
     current_ride = rides[ride_id]  # xstart, ystart, xfinish, yfinish, earliest_start, latest_finish
     x_start, y_start = get_ride_start(current_ride)
     x_finish, y_finish = get_ride_end(current_ride)
     earliest_start, latest_finish = get_ride_times(current_ride)
-    if finished_time > latest_finish:
-        return 0  # I finished too late, no score
-    if started_time == earliest_start:
-        score += bonus  # yay I started in time
-    number_of_steps = abs(x_start - x_finish) + abs(y_start - y_finish)
+
+    number_of_steps = distance((x_start,y_start),(x_finish,y_finish))
     score += number_of_steps
+
+    timeToArrive=distance((current_x,current_y),(x_start,y_start))
+    if current_step+timeToArrive==earliest_start:
+        score+=bonus
+    timeToWait=earliest_start-current_step+timeToArrive
+
+    score=score - timeToArrive-timeToWait
+
     return score
 
+
+def calculate_ride_score(rides,bonus,ride_id,current_turn):
+    score=0
+    current_ride = rides[ride_id]  # xstart, ystart, xfinish, yfinish, earliest_start, latest_finish
+    x_start, y_start = get_ride_start(current_ride)
+    x_finish, y_finish = get_ride_end(current_ride)
+    earliest_start, latest_finish = get_ride_times(current_ride)
+    if current_turn==earliest_start:
+        score+=bonus
+
+    score+=distance((x_start,y_start),(x_finish,y_finish))
+
+    return  score
 
 def parse_input_file(filename):
     f = open(filename)

@@ -7,6 +7,7 @@ Hashcode 2018 first round
 import sys
 # import numpy as np
 from enum import Enum
+import random
 
 
 class VehicleState(Enum):
@@ -172,6 +173,7 @@ def simulate(max_turns, vehicles, rides):
 		TODO: Gestire caso in cui la nuova ride ha coordinate di partenza coincidenti con la posizione attuale
     """
     ride_indexes = [i for i in range(len(rides))]
+    random.shuffle(ride_indexes)
     print("ride_indexes: ", ride_indexes)
     for t in range(max_turns):
         for v in vehicles:
@@ -210,7 +212,7 @@ def write_output(filename, vehicles):
         for i in range(dim):
             submission.write("%d " % vehicle[-1][i])
         submission.write("\n")
-        
+
 filename = []
 filename.append('input/a_example.in')
 filename.append('input/b_should_be_easy.in')

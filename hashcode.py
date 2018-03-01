@@ -11,26 +11,30 @@ import numpy as np
 
 
 def parse_input_file(filename):
-    f = open("input/" + filename)
+    f = open(filename)
 
     line = f.readline()
     con = line.split(' ')
-    r = int(con[0])
-    c = int(con[1])
+    rows = int(con[0])
+    cols = int(con[1])
+    n_vehicles = int(con[2])
+    n_rides = int(con[3])
+    starting_bonus = int(con[4])
+    n_steps = int(con[5])
 
-    min_t = int(con[2])  # minimum number of tomatoes and blabla
-    max_size = int(con[3])  # max slice size
-
-    matrix = np.zeros(shape=(r, c))
-    m_i = 0
-    for line in f:
-        if not line.startswith(str(r)):
-            indices = [i for i, ltr in enumerate(line) if ltr == 'T']
-            matrix[m_i][indices] = 1
-            m_i += 1
     f.close()
-    return matrix, min_t, max_size
+    return rows, cols, n_vehicles, n_rides, starting_bonus, n_steps
 
+def build_matrix(rows, cols):
+    # TODO
+    # matrix = np.zeros(shape=(r, c))
+    # m_i = 0
+    # for line in f:
+    #     if not line.startswith(str(r)):
+    #         indices = [i for i, ltr in enumerate(line) if ltr == 'T']
+    #         matrix[m_i][indices] = 1
+    #         m_i += 1
+    return np.zeros((rows, cols))
 
 def write_output(filename, things_to_score):
     with open(filename[:-3] + ".out", "w") as file:
@@ -44,6 +48,7 @@ def calculate_score(score_input):
     return score
 
 
-FILENAME = sys.argv[1]
-parse_input_file(FILENAME)
-write_output(FILENAME, "")
+filename = sys.argv[1]
+rows, cols, n_vehicles, n_rides, starting_bonus, n_steps = parse_input_file(filename)
+print(rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
+# write_output(FILENAME, "")

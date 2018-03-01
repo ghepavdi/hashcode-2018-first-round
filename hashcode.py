@@ -1,9 +1,7 @@
 """
 Hashcode 2018 first round
 
-#test commit claudio
-#test commit cristiano
-
+# ottimizzazione: le rides che hanno inizio e fine in comune, assegnarle allo stesso veicoli
 """
 
 import sys

@@ -7,10 +7,10 @@ def ride_is_optimal(vehicle, ride):
 def write_output(vehicles):
     submission = open('output.txt', 'w')
     for vehicle in vehicles:
-        dim = len(vehicle[3])
+        dim = len(vehicle[-1])
         submission.write("%d " % dim)
         for i in range(dim):
-            submission.write("%d " % vehicle[3][i])
+            submission.write("%d " % vehicle[-1][i])
         submission.write("\n")
 
 vehicles = [0, 0, 0, [1, 2, 3]], [0, 0, 0, [4, 5]]

@@ -107,12 +107,14 @@ def calculate_ride_score(rides,bonus,ride_id,current_turn):
     x_start, y_start = get_ride_start(current_ride)
     x_finish, y_finish = get_ride_end(current_ride)
     earliest_start, latest_finish = get_ride_times(current_ride)
+
     if current_turn==earliest_start:
+        print("wew")
         score+=bonus
 
     score+=distance((x_start,y_start),(x_finish,y_finish))
 
-    return  score
+    return score
 
 def parse_input_file(filename):
     f = open(filename)
@@ -213,6 +215,15 @@ def simulate(max_turns, vehicles, rides, bonus):
                     set_ride_completed(curr_ride)
             if v_state is VehicleState.NO_RIDE:
                 for r in ride_indexes:
+                    ride_start = get_ride_start(rides[r])
+                    vehicle_pos = get_vehicle_position(v)
+                    if ride_can_be_made_by_vehicle(v, rides[r], t, max_turns) and ride_start[0] == vehicle_pos[0] and ride_start[1] == vehicle_pos[1]:
+                        set_vehicle_ride(v, r)
+                        set_ride_state(rides[r], RideState.ASSIGNED)
+                        ride_indexes.remove(r)
+                        score += calculate_ride_score(rides, bonus, r, t)
+                        break
+                for r in ride_indexes:
                     if ride_can_be_made_by_vehicle(v, rides[r], t, max_turns):
                         set_vehicle_ride(v, r)
                         set_ride_state(rides[r], RideState.ASSIGNED)
@@ -250,6 +261,7 @@ while True:
     rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
     vehicles = create_vehicles(n_vehicles)
     curr_score = simulate(n_steps, vehicles, rides, starting_bonus)
+    print(curr_score)
     if curr_score > best_score:
         print("YAY", curr_score)
         write_output(filename, vehicles)

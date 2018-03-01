@@ -26,12 +26,9 @@ def distance(start_point, end_point):
 def calculate_ride_score(rides,bonus,ride_id,started_time,finished_time):
     score=0
     current_ride=rides[ride_id]#xstart, ystart, xfinish, yfinish, earliest_start, latest_finish
-    x_start=current_ride[0]
-    y_start=current_ride[1]
-    x_finish=current_ride[2]
-    y_finish=current_ride[3]
-    earliest_start=current_ride[4]
-    latest_finish=current_ride[5]
+    x_start,y_start=get_ride_start(current_ride)
+    x_finish, y_finish=get_ride_end(current_ride)
+    earliest_start, latest_finish=get_ride_times(current_ride)
     if finished_time> latest_finish:
         return 0# I finished too late, no score
     if started_time==earliest_start:

@@ -109,7 +109,7 @@ def calculate_ride_score(rides,bonus,ride_id,current_turn):
     earliest_start, latest_finish = get_ride_times(current_ride)
 
     if current_turn==earliest_start:
-        print("wew")
+        print("bonus")
         score+=bonus
 
     score+=distance((x_start,y_start),(x_finish,y_finish))
@@ -214,22 +214,25 @@ def simulate(max_turns, vehicles, rides, bonus):
                     set_vehicle_position(v, get_ride_end(curr_ride))
                     set_ride_completed(curr_ride)
             if v_state is VehicleState.NO_RIDE:
+                found = False
                 for r in ride_indexes:
                     ride_start = get_ride_start(rides[r])
                     vehicle_pos = get_vehicle_position(v)
-                    if ride_can_be_made_by_vehicle(v, rides[r], t, max_turns) and ride_start[0] == vehicle_pos[0] and ride_start[1] == vehicle_pos[1]:
+                    if ride_can_be_made_by_vehicle(v, rides[r], t, max_turns) and distance(ride_start, vehicle_pos) == 0:
                         set_vehicle_ride(v, r)
                         set_ride_state(rides[r], RideState.ASSIGNED)
                         ride_indexes.remove(r)
                         score += calculate_ride_score(rides, bonus, r, t)
+                        found = True
                         break
-                for r in ride_indexes:
-                    if ride_can_be_made_by_vehicle(v, rides[r], t, max_turns):
-                        set_vehicle_ride(v, r)
-                        set_ride_state(rides[r], RideState.ASSIGNED)
-                        ride_indexes.remove(r)
-                        score += calculate_ride_score(rides, bonus, r, t)
-                        break
+                if not found:
+                    for r in ride_indexes:
+                        if ride_can_be_made_by_vehicle(v, rides[r], t, max_turns):
+                            set_vehicle_ride(v, r)
+                            set_ride_state(rides[r], RideState.ASSIGNED)
+                            ride_indexes.remove(r)
+                            score += calculate_ride_score(rides, bonus, r, t)
+                            break
     return score
 
 def ride_is_optimal(vehicle, ride):
@@ -245,7 +248,7 @@ def write_output(filename, vehicles):
             submission.write("%d " % vehicle[-1][i])
         submission.write("\n")
 
-filename = 'input/b_should_be_easy.in'
+filename = 'input/c_no_hurry.in'
 # filename.append('input/a_example.in')
 # filename.append('input/b_should_be_easy.in')
 # filename.append('input/c_no_hurry.in')

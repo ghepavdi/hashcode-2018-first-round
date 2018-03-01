@@ -66,7 +66,6 @@ def get_vehicle_ride(vehicle, rides):
         return None
 
 def set_vehicle_ride(vehicle, ride_index):
-    print("debug", vehicle[-1], ride_index)
     vehicle[-1].append(ride_index)
 
 def get_vehicle_remaining_turns(vehicle):
@@ -213,10 +212,10 @@ def write_output(filename, vehicles):
         submission.write("\n")
 
 # filename = 'input/a_example.in'
-filename = 'input/b_should_be_easy.in'
+# filename = 'input/b_should_be_easy.in'
 # filename = 'input/c_no_hurry.in'
 # filename = 'input/d_metropolis.in'
-# filename = 'input/e_high_bonus.in'
+filename = 'input/e_high_bonus.in'
 
 rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
 vehicles = create_vehicles(n_vehicles)

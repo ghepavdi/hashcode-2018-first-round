@@ -6,7 +6,12 @@ Hashcode 2018 first round
 
 import sys
 import numpy as np
+from enum import Enum
 
+class VehicleState(Enum):
+    NO_RIDE = 0
+    GOING_TO_RIDE = 1
+    ON_RIDE = 2
 
 def get_ride_start(ride):
     return [ride[0], ride[1]]
@@ -54,11 +59,17 @@ def write_output(filename, things_to_score):
         # for s in things_to_score:
         #     file.write("{} {} {} {}\n".format(s[0], s[1], s[2], s[3]))
 
-
 def calculate_score(score_input):
     score = 0
     return score
 
+def ride_can_be_made(ride, current_step, max_step):
+    time_to_complete_ride = distance(get_ride_start(ride), get_ride_end(ride))
+    # NOTE: <= ???
+    return (current_step + time_to_complete_ride) <= max_step
+
+def ride_can_be_made_by_vehicle(vehicle, ride, current_step, max_step):
+    pass
 
 filename = sys.argv[1]
 rows, cols, n_vehicles, n_rides, starting_bonus, n_steps = parse_input_file(filename)

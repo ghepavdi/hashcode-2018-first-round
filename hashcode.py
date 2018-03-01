@@ -38,7 +38,6 @@ def calculate_ride_score(rides,bonus,ride_id,current_step):
     return score
 
 
-
 def parse_input_file(filename):
     f = open(filename)
 
@@ -84,8 +83,19 @@ def calculate_score(score_input):
     return score
 
 
+
+def create_vehicles(n_vehicles):
+    # state_enum, x, y, id_ride
+    vehicles = []
+    for i in range(n_vehicles):
+        vehicles.append(np.array([0, 0, 0, 0]))
+    return np.array(vehicles)
+
+
 filename = sys.argv[1]
 rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
-print(rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
-print(rides)
+vehicles = create_vehicles(n_vehicles)
+print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
+print("rides: ", rides)
+print("vehicles: ", vehicles)
 # write_output(FILENAME, "")

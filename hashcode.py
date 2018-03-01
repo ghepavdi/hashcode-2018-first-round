@@ -1,5 +1,8 @@
 """
 Hashcode 2018 first round
+
+#test commit claudio
+
 """
 
 import sys

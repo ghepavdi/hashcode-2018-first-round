@@ -7,6 +7,7 @@ Hashcode 2018 first round
 import sys
 # import numpy as np
 from enum import Enum
+import random
 
 
 class VehicleState(Enum):
@@ -190,6 +191,7 @@ def simulate(max_turns, vehicles, rides):
 		TODO: Gestire caso in cui la nuova ride ha coordinate di partenza coincidenti con la posizione attuale
     """
     ride_indexes = [i for i in range(len(rides))]
+    random.shuffle(ride_indexes)
     print("ride_indexes: ", ride_indexes)
     for t in range(max_turns):
         for v in vehicles:
@@ -229,17 +231,20 @@ def write_output(filename, vehicles):
             submission.write("%d " % vehicle[-1][i])
         submission.write("\n")
 
-# filename = 'input/a_example.in'
-# filename = 'input/b_should_be_easy.in'
-# filename = 'input/c_no_hurry.in'
-# filename = 'input/d_metropolis.in'
-filename = 'input/e_high_bonus.in'
+filename = []
+filename.append('input/a_example.in')
+filename.append('input/b_should_be_easy.in')
+filename.append('input/c_no_hurry.in')
+filename.append('input/d_metropolis.in')
+filename.append('input/e_high_bonus.in')
 
-rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
-vehicles = create_vehicles(n_vehicles)
-simulate(n_steps, vehicles, rides)
+for file in filename:
+    rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(file)
+    vehicles = create_vehicles(n_vehicles)
+    simulate(n_steps, vehicles, rides)
 
-print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
-print("rides: ", rides)
-print("vehicles: ", vehicles)
-write_output(filename, vehicles)
+    print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
+    print("rides: ", rides)
+    print("vehicles: ", vehicles)
+
+    write_output(file, vehicles)

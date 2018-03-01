@@ -117,11 +117,11 @@ def create_vehicles(n_vehicles):
     # state_enum, x, y, id_ride
     vehicles = []
     for i in range(n_vehicles):
-        vehicles.append(np.array([0, 0, 0, 0]))
+        vehicles.append(np.array([0, 0, 0, -1]))
     return np.array(vehicles)
 
 
-filename = sys.argv[1]
+filename = 'input/a_example.in' #sys.argv[1]
 rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
 vehicles = create_vehicles(n_vehicles)
 print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)

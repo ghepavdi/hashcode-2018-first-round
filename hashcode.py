@@ -8,6 +8,20 @@ import sys
 import numpy as np
 
 
+def get_ride_start(ride):
+    return [ride[0], ride[1]]
+
+def get_ride_end(ride):
+    return [ride[2], ride[3]]
+
+def get_ride_times(ride):
+    return [ride[4], ride[5]]
+
+def distance(start_point, end_point):
+    a, b = start_point
+    x, y = end_point
+    return abs(a - x) + abs(b - y) 
+
 def parse_input_file(filename):
     f = open(filename)
 

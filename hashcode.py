@@ -33,8 +33,7 @@ def calculate_ride_score(rides,bonus,ride_id,current_step):
         return 0# I finished too late, no score"""
     if current_step==earliest_start:
         score+=bonus#yay I started in time
-    number_of_steps=abs(x_start-x_finish)+abs(y_start-y_finish)
-    score+=number_of_steps
+    score+=distance((x_start,y_start),(x_finish,y_finish))
     return score
 
 

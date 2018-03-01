@@ -210,18 +210,21 @@ def write_output(filename, vehicles):
         for i in range(dim):
             submission.write("%d " % vehicle[-1][i])
         submission.write("\n")
+        
+filename = []
+filename.append('input/a_example.in')
+filename.append('input/b_should_be_easy.in')
+filename.append('input/c_no_hurry.in')
+filename.append('input/d_metropolis.in')
+filename.append('input/e_high_bonus.in')
 
-# filename = 'input/a_example.in'
-filename = 'input/b_should_be_easy.in'
-# filename = 'input/c_no_hurry.in'
-# filename = 'input/d_metropolis.in'
-# filename = 'input/e_high_bonus.in'
+for file in filename:
+    rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(file)
+    vehicles = create_vehicles(n_vehicles)
+    simulate(n_steps, vehicles, rides)
 
-rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
-vehicles = create_vehicles(n_vehicles)
-simulate(n_steps, vehicles, rides)
+    print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
+    print("rides: ", rides)
+    print("vehicles: ", vehicles)
 
-print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
-print("rides: ", rides)
-print("vehicles: ", vehicles)
-write_output(filename, vehicles)
+    write_output(file, vehicles)

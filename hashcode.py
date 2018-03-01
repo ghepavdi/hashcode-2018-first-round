@@ -33,9 +33,16 @@ def parse_input_file(filename):
     n_rides = int(con[3])
     starting_bonus = int(con[4])
     n_steps = int(con[5])
+    rides = []
+
+    for line in f:
+        values = line.split(' ')
+        rides.append(np.array([int(values[0]), int(values[1]), int(values[2]), int(values[3]), int(values[4]), int(values[5]), 0]))
+
+    np_rides = np.array(rides)
 
     f.close()
-    return rows, cols, n_vehicles, n_rides, starting_bonus, n_steps
+    return rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, np_rides
 
 def build_matrix(rows, cols):
     # TODO
@@ -61,6 +68,7 @@ def calculate_score(score_input):
 
 
 filename = sys.argv[1]
-rows, cols, n_vehicles, n_rides, starting_bonus, n_steps = parse_input_file(filename)
+rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
 print(rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
+print(rides)
 # write_output(FILENAME, "")

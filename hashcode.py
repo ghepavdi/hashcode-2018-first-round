@@ -22,6 +22,20 @@ def get_ride_end(ride):
 def get_ride_times(ride):
     return [ride[4], ride[5]]
 
+def get_ride_time_to_complete(ride):
+    return distance(get_ride_start(ride), get_ride_end(ride))
+
+def get_vehicle_state(vehicle):
+    return vehicle[0]
+
+def get_vehicle_position(vehicle):
+    return [vehicle[1], vehicle[2]]
+
+def get_vehicle_ride(vehicle):
+    state = get_vehicle_state(vehicle)
+    if state == VehicleState.GOING_TO_RIDE or state == VehicleState.ON_RIDE:
+        return vehicle[3]
+
 def distance(start_point, end_point):
     a, b = start_point
     x, y = end_point
@@ -71,12 +85,16 @@ def calculate_score(score_input):
     return score
 
 def ride_can_be_made(ride, current_step, max_step):
-    time_to_complete_ride = distance(get_ride_start(ride), get_ride_end(ride))
+    time_to_complete_ride = get_ride_time_to_complete(ride)
     # NOTE: <= ???
     return (current_step + time_to_complete_ride) <= max_step
 
 def ride_can_be_made_by_vehicle(vehicle, ride, current_step, max_step):
-    pass
+    vehicle_pos = get_vehicle_position(vehicle)
+    ride_start_pos = get_ride_start(ride)
+    time_to_get_to_ride = distance(vehicle_pos, ride_start_pos)
+    time_to_complete_ride = get_ride_time_to_complete(ride)
+    return (current_step + time_to_get_to_ride + time_to_complete_ride) <= max_step
 
 filename = sys.argv[1]
 rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)

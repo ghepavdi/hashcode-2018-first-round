@@ -66,6 +66,7 @@ def get_vehicle_ride(vehicle, rides):
         return None
 
 def set_vehicle_ride(vehicle, ride_index):
+    print("debug", vehicle[-1], ride_index)
     vehicle[-1].append(ride_index)
 
 def get_vehicle_remaining_turns(vehicle):
@@ -171,6 +172,8 @@ def simulate(max_turns, vehicles, rides):
             prendo una ride che posso eseguire
 		TODO: Gestire caso in cui la nuova ride ha coordinate di partenza coincidenti con la posizione attuale
     """
+    ride_indexes = [i for i in range(len(rides))]
+    print("ride_indexes: ", ride_indexes)
     for t in range(max_turns):
         for v in vehicles:
             v_state = get_vehicle_state(v)
@@ -188,19 +191,38 @@ def simulate(max_turns, vehicles, rides):
                     set_vehicle_position(v, get_ride_end(curr_ride))
                     set_ride_completed(curr_ride)
             if v_state is VehicleState.NO_RIDE:
-                for r in range(len(rides)):
-                    if not is_ride_completed(rides[r]) and not is_ride_assigned(rides[r]):
-                        if ride_can_be_made_by_vehicle(v, rides[r], t, max_turns):
-                            set_vehicle_ride(v, r)
-                            set_ride_state(rides[r], RideState.ASSIGNED)
-                            break
+                for r in ride_indexes:
+                    if ride_can_be_made_by_vehicle(v, rides[r], t, max_turns):
+                        set_vehicle_ride(v, r)
+                        set_ride_state(rides[r], RideState.ASSIGNED)
+                        ride_indexes.remove(r)
+                        break
 
 
-filename = 'input/a_example.in'  # sys.argv[1]
+def ride_is_optimal(vehicle, ride):
+    if vehicle[4] == ride[4]:
+        return True
+
+def write_output(filename, vehicles):
+    submission = open(filename + '_out.txt', 'w')
+    for vehicle in vehicles:
+        dim = len(vehicle[-1])
+        submission.write("%d " % dim)
+        for i in range(dim):
+            submission.write("%d " % vehicle[-1][i])
+        submission.write("\n")
+
+# filename = 'input/a_example.in'
+filename = 'input/b_should_be_easy.in'
+# filename = 'input/c_no_hurry.in'
+# filename = 'input/d_metropolis.in'
+# filename = 'input/e_high_bonus.in'
+
 rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
 vehicles = create_vehicles(n_vehicles)
 simulate(n_steps, vehicles, rides)
+
 print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
 print("rides: ", rides)
 print("vehicles: ", vehicles)
-# write_output(FILENAME, "")
+write_output(filename, vehicles)

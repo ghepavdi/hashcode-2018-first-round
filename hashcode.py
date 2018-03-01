@@ -22,6 +22,26 @@ def distance(start_point, end_point):
     x, y = end_point
     return abs(a - x) + abs(b - y) 
 
+
+def calculate_ride_score(rides,bonus,ride_id,started_time,finished_time):
+    score=0
+    current_ride=rides[ride_id]#xstart, ystart, xfinish, yfinish, earliest_start, latest_finish
+    x_start=current_ride[0]
+    y_start=current_ride[1]
+    x_finish=current_ride[2]
+    y_finish=current_ride[3]
+    earliest_start=current_ride[4]
+    latest_finish=current_ride[5]
+    if finished_time> latest_finish:
+        return 0# I finished too late, no score
+    if started_time==earliest_start:
+        score+=bonus#yay I started in time
+    number_of_steps=abs(x_start-x_finish)+abs(y_start-y_finish)
+    score+=number_of_steps
+    return score
+
+
+
 def parse_input_file(filename):
     f = open(filename)
 

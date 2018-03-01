@@ -57,7 +57,6 @@ def calculate_ride_score(rides,bonus,ride_id,started_time,finished_time):
     return score
 
 
-
 def parse_input_file(filename):
     f = open(filename)
 
@@ -113,8 +112,19 @@ def ride_can_be_made_by_vehicle(vehicle, ride, current_step, max_step):
     time_to_complete_ride = get_ride_time_to_complete(ride)
     return (current_step + time_to_get_to_ride + time_to_complete_ride) <= max_step
 
+
+def create_vehicles(n_vehicles):
+    # state_enum, x, y, id_ride
+    vehicles = []
+    for i in range(n_vehicles):
+        vehicles.append(np.array([0, 0, 0, 0]))
+    return np.array(vehicles)
+
+
 filename = sys.argv[1]
 rows, cols, n_vehicles, n_rides, starting_bonus, n_steps, rides = parse_input_file(filename)
-print(rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
-print(rides)
+vehicles = create_vehicles(n_vehicles)
+print("params: ", rows, cols, n_vehicles, n_rides, starting_bonus, n_steps)
+print("rides: ", rides)
+print("vehicles: ", vehicles)
 # write_output(FILENAME, "")
